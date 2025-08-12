@@ -1,0 +1,13 @@
+FROM node:lts-alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "dev"]
+
+# Vite, React 19, Vitest, and GitHub Actions.
+# docker-compose -f docker-compose-dev.yml up --build
