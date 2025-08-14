@@ -16,16 +16,17 @@ jobs:
       - run: docker build -t joaoglp/react-test-vite -f Dockerfile.dev .
       - run: docker run -e CI=true joaoglp/react-test-vite npm test
 
-      # - name: Generate deployment package
-      #   run: zip -r deploy.zip . -x '*.git*'
-      # - name: Deploy to EB
-      #   uses: einaregilsson/beanstalk-deploy@v21
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-      #     application_name: frontend
-      #     environment_name: Frontend-env
-      #     existing_bucket_name: elasticbeanstalk-us-east-1-923445559289
-      #     region: us-east-1
-      #     version_label: ${{ github.sha }}
-      #     deployment_package: deploy.zip
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: frontend-vite
+          environment_name: Frontend-vite-env
+          existing_bucket_name: elasticbeanstalk-eu-north-1-782634014534
+          region: eu-north-1
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
